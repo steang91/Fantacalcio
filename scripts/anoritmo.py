@@ -24,7 +24,7 @@ def calc_mv_fv_historical(player_name, data):
         mvh = player_data['Mv'].iloc[0]
         fvh = player_data['Fm'].iloc[0]
     else:
-        weights = [0.45 if season == '2022-23' else 0.55/(len(player_data['Season'].unique())-1) if (len(player_data['Season'].unique())-1) != 0 else 0.0 for season in player_data['Season']]
+        weights = [0.45 if season == '2023-24' else 0.55/(len(player_data['Season'].unique())-1) if (len(player_data['Season'].unique())-1) != 0 else 0.0 for season in player_data['Season']]
         mvh = (player_data['Mv'] * weights).sum() / sum(weights)
         fvh = (player_data['Fm'] * weights).sum() / sum(weights)
     
