@@ -1,10 +1,10 @@
 #!/bin/sh
 
 Convert(){
-    for file in ../data/xlsxStats/*.ods ; do
+    for file in ../data/xlsxStats/*.xlsx ; do
         echo "Scanning New File.."
         echo "$file"
-        filename=$(basename $file .ods)
+        filename=$(basename $file .xlsx)
         echo $filename
         echo "Removing Old Output.."
         rm  "../data/csvStats/$filename.csv"

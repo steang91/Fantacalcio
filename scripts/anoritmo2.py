@@ -4,8 +4,28 @@ from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 import openpyxl
 
+
 # Caricare i dati
 data = pd.read_csv('../data/anoritmo/PlayerStats.csv')
+print(data)
+
+def get_weights(num_seasons):
+    if num_seasons == 1 or num_seasons ==0:
+        return [1]
+    elif num_seasons == 2:
+        return [0.10, 0.90]
+    elif num_seasons == 3:
+        return [0.10, 0.60, 0.30]
+    elif num_seasons == 4:
+        return [0.10, 0.50, 0.25, 0.15]
+    elif num_seasons == 5:
+        return [0.10, 0.45, 0.25, 0.10, 0.10]
+    elif num_seasons == 6:
+        return [0.10, 0.45, 0.20, 0.10, 0.10, 0.05]
+    else:
+        # Aggiungi altri casi se necessario
+        return [1] # or any other logic that you want to apply for num_seasons greater than 6
+
 
 def calc_mv_fv_historical(player_name, data):
     # Filtrare i dati del calciatore
@@ -24,11 +44,14 @@ def calc_mv_fv_historical(player_name, data):
         mvh = player_data['Mv'].iloc[0]
         fvh = player_data['Fm'].iloc[0]
     else:
-        weights = [0.45 if season == '2022-23' else 0.55/(len(player_data['Season'].unique())-1) if (len(player_data['Season'].unique())-1) != 0 else 0.0 for season in player_data['Season']]
-        mvh = (player_data['Mv'] * weights).sum() / sum(weights)
-        fvh = (player_data['Fm'] * weights).sum() / sum(weights)
-
+        num_seasons = len(player_data['Season'].unique())
+        weights = get_weights(num_seasons)
+        # Group by 'Season' and then compute the weighted average
+        mvh = (player_data.groupby('Season')['Mv'].mean() * weights).sum() / sum(weights)
+        fvh = (player_data.groupby('Season')['Fm'].mean() * weights).sum() / sum(weights)
+    
     return mvh, fvh
+
 
 def classify_mv_fv_historical(row):
     mvh_classification = 'D'
