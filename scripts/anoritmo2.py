@@ -22,6 +22,9 @@ def get_weights(num_seasons):
         return [0.10, 0.45, 0.25, 0.10, 0.10]
     elif num_seasons == 6:
         return [0.10, 0.45, 0.20, 0.10, 0.10, 0.05]
+    elif num_seasons == 6:
+        return [0.10, 0.45, 0.20, 0.10, 0.05, 0.05, 0.05]
+    
     else:
         # Aggiungi altri casi se necessario
         return [1] # or any other logic that you want to apply for num_seasons greater than 6
